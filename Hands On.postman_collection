@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "a4cbecf5-6126-4dc7-bf17-7d88b1931a59",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26617008"
+	},
+	"item": [
+		{
+			"name": "users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://andreina-qa-test.onrender.com/api/users",
+					"protocol": "https",
+					"host": [
+						"andreina-qa-test",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Tester\",\r\n    \"senha\": \"abc123\",\r\n    \"email\": \"teste@teste\",\r\n    \"telefone\": \"92999999999\",\r\n    \"cargo\": \"QA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://andreina-qa-test.onrender.com/api/user",
+					"protocol": "https",
+					"host": [
+						"andreina-qa-test",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user (Com Teste)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"/* -------------------------------------------------------------------------------------------------------\r",
+							"                                                REQUEST\r",
+							"------------------------------------------------------------------------------------------------------- */\r",
+							"pm.sendRequest({\r",
+							"    url: 'https://andreina-qa-test.onrender.com/api/users',\r",
+							"    method: 'GET',\r",
+							"    header: {\r",
+							"        'Authorization': `${pm.collectionVariables.get(\"token\")}`\r",
+							"    }\r",
+							"}, function (err, response) {\r",
+							"    if(err){\r",
+							"        console.error('Erro ao tentar acessar lista de usuários', err)\r",
+							"    }\r",
+							"    pm.variables.set('existingEmails', response.json().map(item => (item.email)))\r",
+							"})\r",
+							"\r",
+							"setTimeout(function () {\r",
+							"    /* -------------------------------------------------------------------------------------------------------\r",
+							"                                                    VARIABLES\r",
+							"    ------------------------------------------------------------------------------------------------------- */\r",
+							"    var validation = {\r",
+							"        minNome: 3,\r",
+							"        maxNome: 80,\r",
+							"        minSenha: 6,\r",
+							"        lenTelefone: 11,\r",
+							"        validCargo: ['QA', 'DEV', 'PO'],\r",
+							"        emailDuplicated: pm.variables.get('existingEmails')\r",
+							"    }; pm.variables.set('validation', validation)\r",
+							"\r",
+							"    var ListOfInvalidEmails = [\r",
+							"        \"invalid_email\",                   // Does not have '@'\r",
+							"        \"invalid@.com\",                    // Dot after '@'\r",
+							"        \"invalid@domain\",                  // Without extension (.com, .org, etc.)\r",
+							"        \"@invalid.com\",                    // Begins with '@'\r",
+							"        \"invalid.email.com\",               // Colon in a domain\r",
+							"        \"invalid@domain@.com\",             // More than one '@'\r",
+							"        \"invalid email@domain.com\",        // Space in an email\r",
+							"        \"invalid.email@domain_com\",        // Domain underscore\r",
+							"        \"invalid.email@domain..com\",       // Dot duplicate in domain\r",
+							"        \"invalid@domain.-com\",             // Hyphen after dot in domain\r",
+							"        \"invalid.email@domain.com.\"        // Dot at end of email\r",
+							"        // Add more invalid emails if needed\r",
+							"    ]\r",
+							"\r",
+							"    /* -------------------------------------------------------------------------------------------------------\r",
+							"                                                    TEST DATA\r",
+							"    ------------------------------------------------------------------------------------------------------- */\r",
+							"    var validData = {                                                                       // Dados Válidos\r",
+							"        nome: pm.variables.replaceIn('{{$randomFirstName}}'),                               // Nome Válido\r",
+							"        senha: 'abc123',                                                                    // Senha Válida\r",
+							"        email: pm.variables.replaceIn('{{$randomEmail}}'),                                  // Email Válido\r",
+							"        telefone: _.random(10000000000, 99999999999),                                       // Telefone Válido\r",
+							"        cargo: _.sample(validation.validCargo)                                              // Cargo Válido\r",
+							"    }\r",
+							"\r",
+							"    var emptyName = _.cloneDeep(validData); emptyName = {                                   // Nome Vazio\r",
+							"        ...emptyName, nome: null\r",
+							"    }\r",
+							"\r",
+							"    var minName = _.cloneDeep(validData); minName ={                                        // Mínimo Nome\r",
+							"        ...minName, nome: 'a'.repeat(validation.minNome - 1)\r",
+							"    }\r",
+							"\r",
+							"    var maxName = _.cloneDeep(validData); maxName ={                                        // Máximo Nome\r",
+							"        ...maxName, nome: 'a'.repeat(validation.maxNome + 1)\r",
+							"    }\r",
+							"\r",
+							"    var emptyPassword = _.cloneDeep(validData); emptyPassword ={                            // Senha Vazia\r",
+							"        ...emptyPassword, senha: null\r",
+							"    }\r",
+							"\r",
+							"    var minPassword = _.cloneDeep(validData); minPassword ={                                // Mínimo Senha\r",
+							"        ...minPassword, senha: 1 + 'a'.repeat(validation.minSenha - 2)\r",
+							"    }\r",
+							"\r",
+							"    var emptyEmail = _.cloneDeep(validData); emptyEmail ={                                  // Email Vazio\r",
+							"        ...emptyEmail, email: null\r",
+							"    }\r",
+							"\r",
+							"    var duplicatedEmail = _.cloneDeep(validData); duplicatedEmail ={                        // Email Duplicado\r",
+							"        ...duplicatedEmail, email: _.sample(validation.emailDuplicated)\r",
+							"    }\r",
+							"\r",
+							"    var invalidEmail = _.cloneDeep(validData); invalidEmail ={                              // Email Duplicado\r",
+							"        ...invalidEmail, email: _.sample(ListOfInvalidEmails)\r",
+							"    }\r",
+							"\r",
+							"    var invalidTelefone = _.cloneDeep(validData); invalidTelefone ={                        // Tamanho de Telefone\r",
+							"        ...invalidTelefone, telefone: \"!234567890A\"\r",
+							"    }\r",
+							"\r",
+							"    var lenTelefone = _.cloneDeep(validData); lenTelefone = {                               // Máximo Telefone\r",
+							"        ...lenTelefone, telefone: '1'.repeat(validation.lenTelefone + 1)\r",
+							"    }\r",
+							"\r",
+							"    var emptyCargo = _.cloneDeep(validData); emptyCargo ={                                  // Cargo Vazio\r",
+							"        ...emptyCargo, cargo: null\r",
+							"    }\r",
+							"\r",
+							"    var invalidCargo = _.cloneDeep(validData); invalidCargo ={                              // Cargo Inválido\r",
+							"        ...invalidCargo, cargo: 'TEST'\r",
+							"    }\r",
+							"    /* -------------------------------------------------------------------------------------------------------\r",
+							"                                                    EXECUTION\r",
+							"    ------------------------------------------------------------------------------------------------------- */\r",
+							"    //                          [QA] Choose a test data object above and put in testData                    //\r",
+							"    testData = invalidCargo\r",
+							"    for (const key in testData) {\r",
+							"        pm.variables.set(`qa_${key}`, testData[key] === null \r",
+							"            ? null\r",
+							"            : `\"${testData[key]}\"`)\r",
+							"    }\r",
+							"}, 2000)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"/* -------------------------------------------------------------------------------------------------------\r",
+							"                                                VARIABLES\r",
+							"------------------------------------------------------------------------------------------------------- */\r",
+							"const message = pm.response.text()\r",
+							"const req = JSON.parse(pm.request.body)\r",
+							"const validation = pm.variables.get(\"validation\")\r",
+							"const emailRegex = /^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$/\r",
+							"\r",
+							"/* -------------------------------------------------------------------------------------------------------\r",
+							"                                                FUNCTIONS\r",
+							"-------------------------------------------------------------------------------------------------------- */\r",
+							"// --------------------------------------------------------------------------------------------- TEST BASE\r",
+							"function test(testName, condition, expectedResult) {\r",
+							"    if (condition) {\r",
+							"        pm.test(testName, function () {\r",
+							"            pm.expect(expectedResult).to.be.true\r",
+							"        })\r",
+							"        return true\r",
+							"    }\r",
+							"    else {\r",
+							"        return false\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"// ---------------------------------------------------------------------------------------- MULTIPLE TESTS\r",
+							"let isRequiredFieldsEmpty = false\r",
+							"function testEmptyField(fieldName, fieldValue) {\r",
+							"    let result = test(\r",
+							"        `Bloqueio de ${fieldName} vazio(a) | ${fieldName} é ${fieldValue}`,\r",
+							"        fieldValue === null || fieldValue === undefined,\r",
+							"        pm.response.code === 400 && message.includes(`Campo ${fieldName} não pode ser vazio`)\r",
+							"    )\r",
+							"    isRequiredFieldsEmpty = isRequiredFieldsEmpty || result\r",
+							"}\r",
+							"\r",
+							"let isFieldsOutOfLimit = false\r",
+							"function testFieldSize(fieldName, fieldValue, option, size) {\r",
+							"    let result = test(\r",
+							"        `Limitar ${fieldName} para não ser ${option} que ${size} | ${fieldName} tem ${fieldValue?.length} caracteres`,\r",
+							"        fieldValue !== null && (option === 'maior' ? fieldValue?.length > size : fieldValue?.length < size),\r",
+							"        pm.response.code === 400 && message.includes(`Campo ${fieldName} não pode ser ${option} que ${size} caracteres`)\r",
+							"    )\r",
+							"    isFieldsOutOfLimit = isFieldsOutOfLimit || result\r",
+							"}\r",
+							"/* -------------------------------------------------------------------------------------------------------\r",
+							"                                                TESTS\r",
+							"------------------------------------------------------------------------------------------------------- */\r",
+							"for (const campo in req) {\r",
+							"    if (campo !== 'telefone') {\r",
+							"        testEmptyField(campo, req[campo])\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"testFieldSize('senha', req.senha, 'menor', validation.minSenha);\r",
+							"testFieldSize('nome', req.nome, 'maior', validation.maxNome);\r",
+							"testFieldSize('nome', req.nome, 'menor', validation.minNome);\r",
+							"\r",
+							"\r",
+							"let conditionIsEmailDuplicated = false\r",
+							"validation.emailDuplicated.forEach(email => {\r",
+							"    if (req.email == email) {\r",
+							"        conditionIsEmailDuplicated = true\r",
+							"    }\r",
+							"})\r",
+							"\r",
+							"let isEmailDuplicated = test(\r",
+							"    `Bloqueio de email  duplicado | email ${req.email} já existe`,\r",
+							"    conditionIsEmailDuplicated,\r",
+							"    pm.response.code === 400 && message.includes(`Endereço de e-mail já existe`)\r",
+							")\r",
+							"\r",
+							"let isEmailInvalid = test(\r",
+							"    `Bloqueio de email inválido | email é ${req.email}`,\r",
+							"    req.email !== null && !emailRegex.test(req.email),\r",
+							"    pm.response.code === 400 && message.includes(`Campo email inválido`)\r",
+							")\r",
+							"\r",
+							"let isTelephoneInvalid = false\r",
+							"isTelephoneInvalid = test(\r",
+							"    `Bloqueio de telefone não numérico | telefone é ${req.telefone}`,\r",
+							"    isNaN(req.telefone),\r",
+							"    pm.response.code === 400 && message.includes(`Campo telefone não pode conter letras ou caracteres especiais`)\r",
+							")\r",
+							"\r",
+							"let isTelephoneInvalidLength = false\r",
+							"isTelephoneInvalidLength = test(\r",
+							"    `Bloqueio de telefone diferente de 11 dígitos | telefone tem ${req.telefone?.length} dígitos`,\r",
+							"    req.telefone !== null && req.telefone?.length !== 11,\r",
+							"    pm.response.code === 400 && message.includes(`Campo telefone deve ter 11 dígitos`)\r",
+							")\r",
+							"\r",
+							"let conditionIsCargoInvalid = true\r",
+							"validation.validCargo.forEach(cargo => {\r",
+							"    if (req.cargo === cargo) {\r",
+							"        conditionIsCargoInvalid = false\r",
+							"    }\r",
+							"})\r",
+							"\r",
+							"let isCargoInvalid = test(\r",
+							"    `Bloqueio de cargo inválido | cargo é ${req.cargo}`,\r",
+							"    req.cargo !== null && conditionIsCargoInvalid,\r",
+							"    pm.response.code === 400 && message.includes(`Campo cargo inválido`)\r",
+							")\r",
+							"\r",
+							"test(\r",
+							"    `Dados Válidos \r",
+							"        | nome: ${req.nome}; \r",
+							"        senha: ${req.senha}; \r",
+							"        email: ${req.email}; \r",
+							"        telefone: ${req.telefone}; \r",
+							"        cargo: ${req.cargo}`,\r",
+							"    !isRequiredFieldsEmpty\r",
+							"    && !isFieldsOutOfLimit\r",
+							"    && !isTelephoneInvalid\r",
+							"    && !isTelephoneInvalidLength\r",
+							"    && !isEmailDuplicated\r",
+							"    && !isEmailInvalid\r",
+							"    && !isCargoInvalid,\r",
+							"    pm.response.code == 201 && message.includes(\"Usuário registrado com sucesso\")\r",
+							")"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": {{qa_nome}},\r\n    \"senha\": {{qa_senha}},\r\n    \"email\": {{qa_email}},\r\n    \"telefone\": {{qa_telefone}},\r\n    \"cargo\": {{qa_cargo}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://andreina-qa-test.onrender.com/api/user",
+					"protocol": "https",
+					"host": [
+						"andreina-qa-test",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"pm.collectionVariables.set('token', response.token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"admin@admin.com\",\r\n    \"senha\":\"senha123\"\r\n}\r\n\r\n// 401 \"error\": \"Credenciais inválidas\"\r\n// 200 \"message\": \"Login bem-sucedido\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://andreina-qa-test.onrender.com/api/login",
+					"protocol": "https",
+					"host": [
+						"andreina-qa-test",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
