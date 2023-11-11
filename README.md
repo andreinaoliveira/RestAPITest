@@ -85,14 +85,15 @@ No body será inserido a variável correspondente ao campo, conforme criado no p
 ```
 
 <h3>Tests</h3>
-No body será inserido a variável correspondente ao campo, conforme criado no pre-request. Dessa forma será possível enviar de forma automática os dados da requisição, sem a necessidade de escrever manualmente. 
+Logo no topo da aba testes haverá as variáveis abaixo sendo _message_ responsável pela mensagem retornada ao enviar a requisição, _req_ o copo da requisição enviada e _validation_ o objeto previamente criado no pre-request
 
 ```javascript
 const message = pm.response.text()
 const req = JSON.parse(pm.request.body)
-const validation = pm.variables.get("validation")
-const emailRegex = /^[\w\.-]+@[\w\.-]+\.\w+$/
+const validation = pm.variables.get("validation")=
 ```
+
+Abaixo temos a base que dará luz aos testes que serão realizados. A função recebe o nome do teste, a condição que deve atender para garantir um determinado resultado. Atingindo a condição o teste nativo do postman é executado e a função retornará _true_, do contrário _false_. O resultado booleano retornado da função servirá para sabermos se essa condição condiz com o requisito. Por exemplo, em um test _isEmailDuplicated_ quando essa função retornar true, significa que há um emaill duplicado no formulário.
 
 ```javascript
 function test(testName, condition, expectedResult) {
