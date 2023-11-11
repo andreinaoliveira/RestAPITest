@@ -39,7 +39,7 @@ O objeto técnico do projeto é criar validação para requisições do tipo POS
 
 <h2>💻 Primeiros passos no Postman </h2>
 
-<h3>Pre-request script</h3>
+<h3>➞ Pre-request script</h3>
 O trecho abaixo fará uma requisição para obter a lista de usuários cadastrados no servidor. Dessa lista, será salvo em _existingEmails_ apenas o e-mail desses usuários. Isso auxiliará em um teste futuro como base para checar se o email do usuário é duplicado.
 
 ```javascript
@@ -70,8 +70,8 @@ const testData = TESTE_AQUI
     }
 }, 2000)
 ```
-
-<h3>Body</h3>
+---
+<h3>➞ Body</h3>
 No body será inserido a variável correspondente ao campo, conforme criado no pre-request. Dessa forma será possível enviar de forma automática os dados da requisição, sem a necessidade de escrever manualmente. 
 
 ```json
@@ -83,8 +83,8 @@ No body será inserido a variável correspondente ao campo, conforme criado no p
     "cargo": {{qa_cargo}}
 }
 ```
-
-<h3>Tests</h3>
+---
+<h3>➞ Tests</h3>
 Logo no topo da aba testes haverá as variáveis abaixo sendo _message_ responsável pela mensagem retornada ao enviar a requisição, _req_ o copo da requisição enviada e _validation_ o objeto previamente criado no pre-request
 
 ```javascript
