@@ -2,12 +2,19 @@
   <img width="60" src="https://www.svgrepo.com/show/354202/postman-icon.svg"><br>
   Rest API Test with Postman
 </h1>
+<h2>🚀 Sobre o Projeto</h2>
+Esse projeto visa instruir sobre o modelo de testes de API usado pela autora do projeto em questão. Além de disponibilizar o código para download.
+O objeto técnico do projeto é criar validação para requisições do tipo POST/PUT utilizándo como estretégia:
+
+* Criação de massa de dados na aba pre-request script do postman para atingir a expectativa do teste.
+* Enviar dados de forma dinâmica para o corpo da requisição na aba body.
+* Validar a saída das requisições na aba tests.
 
 <!-- CENÁRIO DE TESTE -->
+ <h2>📋 Cenário de Teste</h2>
 <table border="0", align="center">
     <tr>
         <td>
-          <h2>📋 Cenário de Teste</h2>
           <p>O formulário ao lado possui as seguintes regras de negócio:</p>
           <ul>
             <li><b>Nome</b>, <b>Senha</b>, <b>Email</b> e <b>Cargo</b> não podem ser vazios;</li>
