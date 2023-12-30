@@ -8,17 +8,17 @@
 [Preparação do Ambiente](%EF%B8%8F-preparação-do-ambiente-)<br>
 [Cenário de Teste](#-cenário-de-teste)<br>
 [Primeiros Passos no Postman](#-primeiros-passos-no-postman-)<br>
-  [Pre-request Script](#-pre-request-script)<br>
-    [Realizando Requisições do tipo GET](#realizando-requisições-do-tipo-get)<br>
-    [Passando os Requisitos para o Código](#passando-os-requisitos-para-o-código)<br>
-    [Criando Massa de Dados (Objetos)](#criando-massa-de-dados-objeto)<br>
-    [Passando a Massa de Dados para o Body](#passando-a-massa-de-dados-objetos-para-o-body)<br>
+ㅤ[Pre-request Script](#-pre-request-script)<br>
+ㅤ[Realizando Requisições do tipo GET](#realizando-requisições-do-tipo-get)<br>
+ㅤ[Passando os Requisitos para o Código](#passando-os-requisitos-para-o-código)<br>
+ㅤ[Criando Massa de Dados (Objetos)](#criando-massa-de-dados-objeto)<br>
+ㅤ[Passando a Massa de Dados para o Body](#passando-a-massa-de-dados-objetos-para-o-body)<br>
 [Body](#-body)<br>
 [Tests](#-tests)<br>
-    [Declaração de Variáveis](#declaração-de-variáveis)<br>
-    [Função para criação da Base dos Testes](#função-para-criação-da-base-dos-testes)<br>
-    [Criando os Testes](#criando-os-testes)<br>
-[Notas Finais](#notas-finais)
+ㅤ[Declaração de Variáveis](#declaração-de-variáveis)<br>
+ㅤ[Função para criação da Base dos Testes](#função-para-criação-da-base-dos-testes)<br>
+ㅤ[Criando os Testes](#criando-os-testes)<br>
+[Notas Finais](#notas-finais)<br>
 [Autores](#autores)
 
 
@@ -265,20 +265,17 @@ test(
 ```
 
 <h1>Notas Finais</h1>
-
+O conhecimento em validação de REST API Test é essencial para cobertura de testes no backend. Hoje temos várias formas de garantir esse teste. O conteúdo apresentado nesse repositório apresenta como realizar essas validações utilizando a ferramenta Postman, mas considere que nem sempre essa ferramenta será a mais indicada para o seu contexto. A técnicas apresentada pode ser adaptada e inclusive tranformada em um único teste que valida todo os cenários, visto que a forma em que hoje o código foi implemantado a validação é feita por requisição. Sinta-se livre para usar o código como base para seus testes. Em caso de dúvidas e sugestões estou disponível para contato.
 
 # Autores
-<!---
-
-| [<img loading="lazy" src="https://avatars.githubusercontent.com/u/37356058?v=4" width=115><br><sub>Camila Fernanda Alves</sub>](https://github.com/camilafernanda) |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/30351153?v=4" width=115><br><sub>Guilherme Lima</sub>](https://github.com/guilhermeonrails) |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/8989346?v=4" width=115><br><sub>Alex Felipe</sub>](https://github.com/alexfelipe) |
-| :---: | :---: | :---: |
 
 <table border="0", align="center">
     <tr>
         <td>
-          <p>O formulário ao lado possui as seguintes regras de negócio:</p>
-          <p>Os requisitos em questão serão usados como base para a criação dos scripts de teste na ferramenta <b>Postman</b>.</p>
+          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/d1e532f9-e1f0-45a6-a9a1-85f78281c563" width=300>
         </td>
-        <td><img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/b4edcb08-c793-4e9a-9f1e-060bdc913e52"></td>
+        <td>
+          <p>Como Desenvolvedora de Testes, minha especialização em Automação de Testes e paixão pelo Gerenciamento Ágil resultam em entregas eficientes e adaptáveis. Líder em iniciativas de automação, busco otimizar ciclos de teste e promover uma cultura de inovação.</p>
+        </td>
     </tr>
 </table>
