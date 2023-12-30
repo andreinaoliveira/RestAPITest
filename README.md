@@ -18,8 +18,8 @@
 ㅤ[Declaração de Variáveis](#declaração-de-variáveis)<br>
 ㅤ[Função para criação da Base dos Testes](#função-para-criação-da-base-dos-testes)<br>
 ㅤ[Criando os Testes](#criando-os-testes)<br>
-[Notas Finais](#contribuições)<br>
-[Autores](#comentários-da-autora)
+[Contribuições](#contribuições)<br>
+[Notas Finais da Autora](#notas-finais-da-autora)
 
 
 <h2>🚀 Sobre o Projeto</h2>
@@ -277,7 +277,7 @@ test(
     </tr>
 </table>
 
-# Comentários da Autora
+# Notas Finais da Autora
 <table border="0", align="center">
     <tr>
         <td>
