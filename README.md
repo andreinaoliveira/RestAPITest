@@ -18,8 +18,8 @@
 ㅤ[Declaração de Variáveis](#declaração-de-variáveis)<br>
 ㅤ[Função para criação da Base dos Testes](#função-para-criação-da-base-dos-testes)<br>
 ㅤ[Criando os Testes](#criando-os-testes)<br>
-[Notas Finais](#notas-finais)<br>
-[Autores](#autores)
+[Notas Finais](#contribuições)<br>
+[Autores](#comentários-da-autora)
 
 
 <h2>🚀 Sobre o Projeto</h2>
