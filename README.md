@@ -268,7 +268,7 @@ test(
 <table border="0", align="center">
     <tr>
         <td>
-          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/209eddcc-5963-4e55-9ccb-5e79182085a0" width=90><br>
+          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/209eddcc-5963-4e55-9ccb-5e79182085a0" width=100><br>
           <a href="https://github.com/EriikSilva">Erik Felipe</a>
         </td>
         <td>
@@ -281,7 +281,7 @@ test(
 <table border="0", align="center">
     <tr>
         <td>
-          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/d1e532f9-e1f0-45a6-a9a1-85f78281c563" width=500><br>
+          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/d1e532f9-e1f0-45a6-a9a1-85f78281c563" width=600><br>
           <a href="https://github.com/andreinaoliveira">Andreina Oliveira</a>
           <p></p>
         </td>
