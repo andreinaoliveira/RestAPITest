@@ -268,7 +268,7 @@ test(
 <table border="0", align="center">
     <tr>
         <td>
-          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/209eddcc-5963-4e55-9ccb-5e79182085a0" width=100><br>
+          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/209eddcc-5963-4e55-9ccb-5e79182085a0" width=150><br>
           <a href="https://github.com/EriikSilva">Erik Felipe</a>
         </td>
         <td>
