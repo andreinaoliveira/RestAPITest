@@ -264,18 +264,29 @@ test(
 )
 ```
 
-<h1>Notas Finais</h1>
-O conhecimento em validação de REST API Test é essencial para cobertura de testes no backend. Hoje temos várias formas de garantir esse teste. O conteúdo apresentado nesse repositório apresenta como realizar essas validações utilizando a ferramenta Postman, mas considere que nem sempre essa ferramenta será a mais indicada para o seu contexto. A técnicas apresentada pode ser adaptada e inclusive tranformada em um único teste que valida todo os cenários, visto que a forma em que hoje o código foi implemantado a validação é feita por requisição. Sinta-se livre para usar o código como base para seus testes. Em caso de dúvidas e sugestões estou disponível para contato.
-
-# Autores
-
+# Contribuições
 <table border="0", align="center">
     <tr>
         <td>
-          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/d1e532f9-e1f0-45a6-a9a1-85f78281c563" width=300>
+          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/209eddcc-5963-4e55-9ccb-5e79182085a0" width=90><br>
+          <a href="https://github.com/EriikSilva">Erik Felipe</a>
         </td>
         <td>
-          <p>Como Desenvolvedora de Testes, minha especialização em Automação de Testes e paixão pelo Gerenciamento Ágil resultam em entregas eficientes e adaptáveis. Líder em iniciativas de automação, busco otimizar ciclos de teste e promover uma cultura de inovação.</p>
+          <p>Gostaria de agradecer ao Erik Felipe pelo backend que ele criou para a nossa API no projeto. A habilidade dele é fora de série e fez toda a diferença. Valeu demais, Erik, você arrebenta! 👏</p>
+        </td>
+    </tr>
+</table>
+
+# Comentários da Autora
+<table border="0", align="center">
+    <tr>
+        <td>
+          <img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/d1e532f9-e1f0-45a6-a9a1-85f78281c563" width=500><br>
+          <a href="https://github.com/andreinaoliveira">Andreina Oliveira</a>
+          <p></p>
+        </td>
+        <td>
+          <p>O conhecimento em validação de REST API Test é essencial para cobertura de testes no backend. Hoje temos várias formas de garantir esse teste. O conteúdo apresentado nesse repositório apresenta como realizar essas validações utilizando a ferramenta Postman, mas considere que nem sempre essa ferramenta será a mais indicada para o seu contexto. A técnicas apresentada pode ser adaptada e inclusive tranformada em um único teste que valida todo os cenários, visto que a forma em que hoje o código foi implemantado a validação é feita por requisição. Sinta-se livre para usar o código como base para seus testes. Em caso de dúvidas e sugestões estou disponível para contato.</p>
         </td>
     </tr>
 </table>
