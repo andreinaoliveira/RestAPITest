@@ -2,13 +2,34 @@
   <img width="60" src="https://www.svgrepo.com/show/354202/postman-icon.svg"><br>
   Rest API Test with Postman
 </h1>
+<h1>Índice</h1>
+
+[#1](#1)<br>
+[#1](#1)<br>
+[#1](#1)<br>
+[#1](#1)<br>
+[#1](#1)<br>
+[#1](#1)<br>
+[#1](#1)<br>
+[#1](#1)<br>
+[#1](#1)<br>
+[#1](#1)
+
+
 <h2>🚀 Sobre o Projeto</h2>
 Esse projeto visa instruir sobre o modelo de testes de API usado pela autora do projeto em questão. Além de disponibilizar o código para download.
-O objeto técnico do projeto é criar validação para requisições do tipo POST/PUT utilizándo como estretégia:
+O objeto técnico do projeto é criar validação para requisições do tipo POST/PUT utilizando como estretégia:
 
 * Criação de massa de dados na aba pre-request script do postman para atingir a expectativa do teste.
 * Enviar dados de forma dinâmica para o corpo da requisição na aba body.
 * Validar a saída das requisições na aba tests.
+
+<h2>🛠️ Preparação do Ambiente </h2>
+
+1. Criar uma conta no Postman.
+2. Instalar Postman.
+3. Baixar a collection desse repositório.
+4. Importar a collection no Postman.
 
 <!-- CENÁRIO DE TESTE -->
  <h2>📋 Cenário de Teste</h2>
@@ -30,16 +51,11 @@ O objeto técnico do projeto é criar validação para requisições do tipo POS
     </tr>
 </table>
 
-<h2>🛠️ Preparação do Ambiente </h2>
-
-1. Criar uma conta no Postman.
-2. Instalar Postman.
-3. Baixar a collection desse repositório.
-4. Importar a collection no Postman.
-
 <h2>💻 Primeiros passos no Postman </h2>
 
 <h3>➞ Pre-request script</h3>
+<h4>Realizando requisições do tipo GET</h4>
+
 O trecho abaixo fará uma requisição para obter a lista de usuários cadastrados no servidor. Dessa lista, será salvo em _existingEmails_ apenas o e-mail desses usuários. Isso auxiliará em um teste futuro como base para checar se o email do usuário é duplicado.
 
 ```javascript
@@ -58,7 +74,94 @@ pm.sendRequest({
 ```
 
 O Processo de vida do código quando acontece uma requisição é de executar as demais linhas do código sem aguardar o resulltado da requisição. Portanto, será necessário adicionar um timer (também pode ser um assync await) fazendo com que as demais linhas do código sejam executadas apenas após receber os dados da requisição anterior.
-Dentro do _setTimeout_ está sendo declarado _testData_ que é a variável que receberá a massa de dados dos testes. Tendo recebido esses dados, será percorrido cada um deles e criado uma variávevl visível no contexto da requisição (ou seja, para todas as abas). Isso servirá para enviar esses dados para o corpo da requisição (body).
+
+```javascript
+setTimeout(function () {
+
+}, 2000)
+```
+<h4>Passando os requisitos para o código</h4>
+
+Dentro do _setTimeout_ será criado a variável _validation_ onde conterá as regras de negócios definidas em [#1](#1), além disso, contará com uma lista de e-mails inválidos para validações futuras
+
+```javascript
+    var validation = {
+        minNome: 3,
+        maxNome: 80,
+        minSenha: 6,
+        lenTelefone: 11,
+        validCargo: ['QA', 'DEV', 'PO'],
+        emailDuplicated: pm.variables.get('existingEmails')
+    }; pm.variables.set('validation', validation)
+
+    var ListOfInvalidEmails = [
+        "invalid_email",                   // Does not have '@'
+        "invalid@.com",                    // Dot after '@'
+        "invalid@domain",                  // Without extension (.com, .org, etc.)
+        "@invalid.com",                    // Begins with '@'
+        "invalid.email.com",               // Colon in a domain
+        "invalid@domain@.com",             // More than one '@'
+        "invalid email@domain.com",        // Space in an email
+        "invalid.email@domain_com",        // Domain underscore
+        "invalid.email@domain..com",       // Dot duplicate in domain
+        "invalid@domain.-com",             // Hyphen after dot in domain
+        "invalid.email@domain.com."        // Dot at end of email
+        // Add more invalid emails if needed
+    ]
+```
+<h4>Criando Massa de Dados (Objeto)</h4>
+
+Logo após o código acima, ainda dentro do _setTimeout_, será criado o objeto _validData_ que contem os campos Nome, Senha, Email, Telefone e Cargo com dados válidos.
+
+```javascript
+var validData = {                                             // Dados Válidos
+        nome: pm.variables.replaceIn('{{$randomFirstName}}'), // Nome Válido
+        senha: 'abc123',                                      // Senha Válida
+        email: pm.variables.replaceIn('{{$randomEmail}}'),    // Email Válido
+        telefone: _.random(10000000000, 99999999999),         // Telefone Válido
+        cargo: _.sample(validation.validCargo)                // Cargo Válido
+    }
+```
+
+Com base no objeto _validData_, será criado uma cópia dele para os objetos abaixo.
+- emptyName
+- minName
+- maxName
+- emptyPassword
+- minPassword
+- emptyEmail
+- duplicatedEmail
+- invalidEmail
+- invalidTelefone
+- lenTelefone
+- emptyCargo
+- invalidCargo
+
+E em seguida o objeto será modificado para conter a falha desejada. Segue exemplo de como isso ocorre:
+
+```javascript
+var minName = _.cloneDeep(validData); minName ={                          // Mínimo Nome
+    ...minName, nome: 'a'.repeat(validation.minNome - 1)
+}
+
+var emptyPassword = _.cloneDeep(validData); emptyPassword ={              // Senha Vazia
+    ..emptyPassword, senha: null
+}
+
+var duplicatedEmail = _.cloneDeep(validData); duplicatedEmail ={          // Email Duplicado
+    ...duplicatedEmail, email: _.sample(validation.emailDuplicated)
+}
+
+var invalidEmail = _.cloneDeep(validData); invalidEmail ={                // Email Duplicad.
+    ...invalidEmail, email: _.sample(ListOfInvalidEmails)
+}
+```
+
+Inclusive é possível agrupar falhas dependendo de como o back-end funciona. Por exemplo, no caso de deixar todos os dados vazios e o servidor retornar mensagem de dados vazios para cada campo, é possível criar apenas um objeto contendo todos os campos recebendo null.
+
+<h4>Passando a Massa de Dados (Objetos) para o body</h4>
+
+Ao final da massa de testes, dentro do _setTimeout_ está sendo declarado _testData_ que é a variável que receberá a massa de dados dos testes. Tendo recebido esses dados, será percorrido cada um deles e criado uma variávevl visível no contexto da requisição (ou seja, para todas as abas). Isso servirá para enviar esses dados para o corpo da requisição (body).
 
 ```javascript
 setTimeout(function () {
@@ -85,15 +188,27 @@ No body será inserido a variável correspondente ao campo, conforme criado no p
 ```
 ---
 <h3>➞ Tests</h3>
-Logo no topo da aba testes haverá as variáveis abaixo sendo _message_ responsável pela mensagem retornada ao enviar a requisição, _req_ o copo da requisição enviada e _validation_ o objeto previamente criado no pre-request
+
+<h4>Declaração de Variáveis</h4>
+
+Logo no topo da aba testes haverá as variáveis abaixo sendo _message_ responsável pela mensagem retornada ao enviar a requisição, _req_ o copo da requisição enviada e _validation_ o objeto previamente criado no pre-request. Ainda declarando as variáveis que ajudaram na validação, foi declarado o emailRegex com objetivo de validar e-mails.
 
 ```javascript
 const message = pm.response.text()
 const req = JSON.parse(pm.request.body)
-const validation = pm.variables.get("validation")=
+const validation = pm.variables.get("validation")
+const emailRegex = /^[\w\.-]+@[\w\.-]+\.\w+$/
 ```
 
-Abaixo temos a base que dará luz aos testes que serão realizados. A função recebe o nome do teste, a condição que deve atender para garantir um determinado resultado. Atingindo a condição o teste nativo do postman é executado e a função retornará _true_, do contrário _false_. O resultado booleano retornado da função servirá para sabermos se essa condição condiz com o requisito. Por exemplo, em um test _isEmailDuplicated_ quando essa função retornar true, significa que há um emaill duplicado no formulário.
+<h4>Função para criação da Base dos Testes</h4>
+
+
+Abaixo temos a base que dará luz aos testes que serão realizados. A função recebe:
+- _testName_: O nome do teste. Ex.: "Bloqueio de telefone diferente de 11 dígitos"
+- _condition_: A condição para que o teste seja executado. Ex.: O teste só será executado se o resultado a seguir for verdadeiro ```req.telefone?.length !== 11```
+- _expectedResult_: O resultado esperado quando a condição for atingida. Ex.: Dado que _condition_ é verdadeiro então o resultado do código a seguir também deve ser verdadeiro ``` pm.response.code === 400 && message.includes(`Campo telefone deve ter 11 dígitos`)```
+
+Podemos concluir que _condition_ e _expectedResult_ recebem booleanos por parâmentro.
 
 ```javascript
 function test(testName, condition, expectedResult) {
@@ -108,3 +223,56 @@ function test(testName, condition, expectedResult) {
     }
 }
 ```
+
+<h4>Criando os Testes</h4>
+
+Muitos testes foram criados e todos os testes estão no arquivo [Hands On.postman_collection](https://github.com/andreinaoliveira/RestAPITest/blob/master/Hands%20On.postman_collection) para documentação não ficar extensa, estarei dando apenas alguns exemplos. Mas existe uma gama de exemplos no arquivo, alguns com técnicas diferentes para deixar o código mais clean.
+
+Nos exemplos abaixo, temos a variável _isTelephoneInvalidLength_ sendo declarada como _false_ o que significa: "O tamanho de telefone é inválido? MENTIRA". Logo abaixo a variável chama a função anterior referente a base de teste, nela, passando por parâmetro o nome do teste, a condição para que o teste ocorra e o resultado esperado para o caso de o teste ocorrer. O teste ocorrendo retorna _true_ no caso de o telefone ser inválido ou _false_ no caso de válido.
+
+Abaixo, a função teste é chamada com o objetivo de validar se os dados passados no body são válidos, a condição é que todos os testes realizados incluindo o teste anterior, _isTelephoneInvalidLength_, retorne _false_ que, como explicado anteriormente, significa que não é inválido, sendo _true_ uma afirmação de inválido. Atingindo a condição, o resultado do teste precisa atingir o código e mensagem de confirmação.
+
+```javascript
+let isTelephoneInvalidLength = false
+isTelephoneInvalidLength = test(
+    `Bloqueio de telefone diferente de 11 dígitos | telefone tem ${req.telefone?.length} dígitos`,
+    req.telefone !== null && req.telefone?.length !== 11,
+    pm.response.code === 400 && message.includes(`Campo telefone deve ter 11 dígitos`)
+)
+
+test(
+    `Dados Válidos 
+        | nome: ${req.nome}; 
+        senha: ${req.senha}; 
+        email: ${req.email}; 
+        telefone: ${req.telefone}; 
+        cargo: ${req.cargo}`,
+    !isRequiredFieldsEmpty
+    && !isFieldsOutOfLimit
+    && !isTelephoneInvalid
+    && !isTelephoneInvalidLength
+    && !isEmailDuplicated
+    && !isEmailInvalid
+    && !isCargoInvalid,
+    pm.response.code == 201 && message.includes("Usuário registrado com sucesso")
+)
+```
+
+<h1>Notas Finais</h1>
+
+
+# Autores
+<!---
+
+| [<img loading="lazy" src="https://avatars.githubusercontent.com/u/37356058?v=4" width=115><br><sub>Camila Fernanda Alves</sub>](https://github.com/camilafernanda) |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/30351153?v=4" width=115><br><sub>Guilherme Lima</sub>](https://github.com/guilhermeonrails) |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/8989346?v=4" width=115><br><sub>Alex Felipe</sub>](https://github.com/alexfelipe) |
+| :---: | :---: | :---: |
+
+<table border="0", align="center">
+    <tr>
+        <td>
+          <p>O formulário ao lado possui as seguintes regras de negócio:</p>
+          <p>Os requisitos em questão serão usados como base para a criação dos scripts de teste na ferramenta <b>Postman</b>.</p>
+        </td>
+        <td><img src="https://github.com/andreinaoliveira/RestAPITest/assets/51168329/b4edcb08-c793-4e9a-9f1e-060bdc913e52"></td>
+    </tr>
+</table>
