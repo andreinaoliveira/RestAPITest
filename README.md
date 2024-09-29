@@ -224,9 +224,7 @@ function test(testName, condition, expectedResult) {
         })
         return true
     }
-    else {
-        return false
-    }
+     return false
 }
 ```
 
